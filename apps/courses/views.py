@@ -18,9 +18,21 @@ def addCourse (request):
     errors = Course.objects.basic_validator(request.POST)
     
     if errors:
-        for error in errors:
+        for tag,error in errors.iteritems():
             messages.error(request, error)
     else:
         Course.objects.create(name = request.POST['name'], desc = request.POST['desc'])
-    #Course.objects.create (name=request.POST['name'], desc = request.POST['desc'])
+    return redirect ('/')
+
+def destroy(request, course_id):
+
+    ID = {
+        'course_id': course_id,
+        'course': Course.objects.get(id=course_id)
+    }
+
+    return render (request, 'courses/check.html', ID)
+
+def yes_destroy(request, course_id):
+    Course.objects.get(id=course_id).delete()
     return redirect ('/')
