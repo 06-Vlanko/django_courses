@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'courses/skeleton.css' %}">
+        <link rel="stylesheet" href="{% static 'courses/normalize.css' %}">
+        <link rel="stylesheet" href="{% static 'courses/style.css' %}">
+        <title>Courses</title>
+    </head>
+    <body>
+        <div id="wrapper">
+            <h1>Add a new course</h1>
+            {% if messages %}
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+            <form action="/add_course/" method="post">
+                {% csrf_token %}
+                <p>
+                    <label for="name">Name:</label>
+                    <input type="text" name="name">
+                </p>
+                <p id="vert-top">
+                    <label for="des">Description:</label>
+                    <textarea name="desc" cols="75" rows="40"></textarea>
+                </p>
+                <input type="submit" value="Add">
+            </form>
+            <div id="data-table">
+                <h1>Courses</h1>
+                <table class="u-full-width">
+                    <thead>
+                        <tr>
+                            <th>Course Name</th>
+                            <th>Description</th>
+                            <th>Date Added</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- add jinja content here -->
+                        {% if courses %}
+                            {% for course in courses %}
+                                <tr>
+                                    <td>{{ course.name }}</td>
+                                    <td>{{ course.desc }}</td>
+                                    <td>{{ course.created_at }}</td>
+                                    <td><a href="/courses/destroy/{{course.id}}">Delete</a></td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
